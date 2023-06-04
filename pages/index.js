@@ -38,5 +38,5 @@ export default function Home(props) {
 export async function getStaticProps() {
   const date = new Date().toLocaleString();
   const props = { lastUpdated: date };
-  return { props, revalidate: 60 };
+  return { props, revalidate: 300 };
 }
