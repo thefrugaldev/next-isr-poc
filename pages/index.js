@@ -1,6 +1,7 @@
 import Head from 'next/head';
 import Image from 'next/image';
 import styles from '../styles/Home.module.css';
+import { getRandomPhotos } from '../utils/get-random-photo';
 
 export default function Home(props) {
   const currentDate = new Date().toLocaleString();
@@ -23,11 +24,13 @@ export default function Home(props) {
         <div className={styles.description}>
           <p>This image was last updated on {props.lastUpdated}</p>
           <Image
-            src={`https://picsum.photos/500/350`}
-            alt="Vercel Logo"
+            src={`https://source.unsplash.com/${props.photo.slug}`}
+            alt={props.photo.description ?? props.photo.alt_description}
             width={500}
             height={350}
           />
+          <p>{props.photo.description ?? props.photo.alt_description}</p>
+          <p>Likes: {props.photo.likes}</p>
         </div>
         <div className={styles.grid}></div>
       </main>
@@ -37,6 +40,9 @@ export default function Home(props) {
 
 export async function getStaticProps() {
   const date = new Date().toLocaleString();
-  const props = { lastUpdated: date };
+
+  const photo = await getRandomPhotos();
+
+  const props = { lastUpdated: date, photo };
   return { props, revalidate: 300 };
 }
